@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { db, storage } from '../../firebase';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProjectManager() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [projects, setProjects] = useState([]);
   const [title, setTitle] = useState('');
   const [type, setType] = useState('Blog');
@@ -12,13 +16,18 @@ export default function ProjectManager() {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/admin");
+      return;
+    }
+
     const fetchProjects = async () => {
       const snapshot = await getDocs(collection(db, "projects"));
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setProjects(data);
     };
     fetchProjects();
-  }, []);
+  }, [user, navigate]);
 
   const handleAddProject = async (e) => {
     e.preventDefault();
@@ -39,6 +48,8 @@ export default function ProjectManager() {
     await deleteDoc(doc(db, "projects", id));
     setProjects(projects.filter(p => p.id !== id));
   };
+
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f3f4f6] to-[#e0f7fa] py-10 px-4">

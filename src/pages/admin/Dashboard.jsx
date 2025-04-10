@@ -1,6 +1,20 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/admin"); // redirect to login if not authenticated
+    }
+  }, [user, navigate]);
+
+  if (!user) return null;
+
   const sections = [
     { title: "Projects", path: "/admin/projects", icon: "🛠" },
     { title: "Skills", path: "/admin/skills", icon: "🧠" },
