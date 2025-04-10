@@ -5,6 +5,7 @@ import CertificationsPage from './pages/CertificationsPage';
 import SubjectsPage from './pages/SubjectsPage';
 import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
+import Projects from './pages/admin/Projects';
 import Header from './components/Header';
 
 export default function App() {
@@ -19,6 +20,8 @@ export default function App() {
           <Route path="/subjects" element={<SubjectsPage />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/projects" element={<Projects />} />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
