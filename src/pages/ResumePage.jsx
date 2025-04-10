@@ -1,4 +1,8 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const sectionCard = (title, content) => (
   <motion.div
@@ -14,21 +18,90 @@ const sectionCard = (title, content) => (
 );
 
 export default function ResumePage() {
+  const [contact, setContact] = useState({});
+  const [skills, setSkills] = useState([]);
+  const [experience, setExperience] = useState([]);
+  const [education, setEducation] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const getCol = async (name) => (await getDocs(collection(db, name))).docs.map(d => d.data());
+      setContact((await getCol("resume_contact"))[0] || {});
+      setSkills(await getCol("resume_skills"));
+      setExperience(await getCol("resume_experience"));
+      setEducation(await getCol("resume_education"));
+      setProjects(await getCol("resume_projects"));
+      setActivities(await getCol("resume_activities"));
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="bg-gradient-to-br from-[#f3f4f6] to-[#e0f7fa] min-h-screen py-10 px-4 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto py-10 px-4">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold text-gray-900">Shanmukh Sri Surya Gopi</h1>
-          <p className="text-md text-gray-600 mt-2">MBA Analytics @ Stevens | Ex-Infosys | Tech + Strategy</p>
+          <p className="text-md text-gray-600 mt-2">{contact.headline || "MBA Analytics | Tech + Strategy"}</p>
         </div>
-        <div className="flex flex-col gap-6 w-full">
-          {sectionCard("📞 Contact", <ul className="space-y-1"><li>Email: shanmukh@example.com</li><li>Phone: +1 (234) 567-8900</li><li>LinkedIn: linkedin.com/in/shanmukh</li></ul>)}
-          {sectionCard("🛠 Skills", <div className="flex flex-wrap gap-2">{["Python", "Java", "SQL", "R", "Tableau", "Salesforce", "Excel", "Firebase", "Git"].map(skill => (<span key={skill} className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full hover:scale-105 transition">{skill}</span>))}</div>)}
-          {sectionCard("💼 Experience", <><p className="font-semibold">Infosys – Systems Engineer</p><p className="text-sm text-gray-600 mb-2">Salesforce CRM support.</p><p className="font-semibold">Indian Servers – Pentester Intern</p><p className="text-sm text-gray-600">Web vulnerability testing.</p></>)}
-          {sectionCard("🎓 Education", <><p className="font-semibold">MBA – Stevens</p><p className="text-sm text-gray-600 mb-2">2023–2025</p><p className="font-semibold">B.Tech – Lakireddy</p><p className="text-sm text-gray-600">2018–2022</p></>)}
-          {sectionCard("📊 Projects", <ul className="list-disc pl-5 space-y-1"><li>Attrition Prediction</li><li>Fake News Detection</li><li>Sales Forecast Dashboard</li></ul>)}
-          {sectionCard("🏆 Activities", <ul className="list-disc pl-5 space-y-1"><li>BI & Analytics Club</li><li>Basketball Runner-up</li><li>NSS Volunteer</li></ul>)}
-        </div>
+
+        {sectionCard("📞 Contact", (
+          <ul className="space-y-1">
+            <li>Email: {contact.email}</li>
+            <li>Phone: {contact.phone}</li>
+            <li>LinkedIn: {contact.linkedin}</li>
+          </ul>
+        ))}
+
+        {sectionCard("🛠 Skills", (
+          <div className="flex flex-wrap gap-2">
+            {skills.map(({ name }) => (
+              <span
+                key={name}
+                onClick={() => navigate(`/projects?skill=${encodeURIComponent(name)}`)}
+                className="cursor-pointer bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full hover:scale-105 transition"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+        ))}
+
+        {sectionCard("💼 Experience", (
+          <ul className="space-y-2">
+            {experience.map((exp, idx) => (
+              <li key={idx}>
+                <p className="font-semibold">{exp.role} – {exp.company}</p>
+                <p className="text-sm text-gray-600">{exp.description}</p>
+              </li>
+            ))}
+          </ul>
+        ))}
+
+        {sectionCard("🎓 Education", (
+          <ul className="space-y-2">
+            {education.map((edu, idx) => (
+              <li key={idx}>
+                <p className="font-semibold">{edu.degree} – {edu.institution}</p>
+                <p className="text-sm text-gray-600">{edu.period}</p>
+              </li>
+            ))}
+          </ul>
+        ))}
+
+        {sectionCard("📊 Projects", (
+          <ul className="list-disc pl-5 space-y-1">
+            {projects.map((p, i) => <li key={i}>{p.title}</li>)}
+          </ul>
+        ))}
+
+        {sectionCard("🏆 Activities", (
+          <ul className="list-disc pl-5 space-y-1">
+            {activities.map((a, i) => <li key={i}>{a.name}</li>)}
+          </ul>
+        ))}
       </div>
     </div>
   );
