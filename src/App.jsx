@@ -7,6 +7,7 @@ import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import Projects from './pages/admin/Projects';
 import Header from './components/Header';
+import ResumeManager from './pages/admin/ResumeManager';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/certifications" element={<CertificationsPage />} />
           <Route path="/subjects" element={<SubjectsPage />} />
+          <Route path="/admin/resume" element={<ResumeManager />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/projects" element={<Projects />} />
