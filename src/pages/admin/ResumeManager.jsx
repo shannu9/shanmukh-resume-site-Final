@@ -28,7 +28,7 @@ const ResumeSection = ({ title, data, onDelete, onSubmit, fields }) => {
       <ul className="text-sm text-gray-700 space-y-2">
         {data.map((item, i) => (
           <li key={i} className="flex justify-between border-b pb-1">
-            <span>{Object.values(item).join(' / ')}</span>
+            <span>{Object.values(item).filter(v => typeof v !== 'string' || !v.startsWith('id')).join(' / ')}</span>
             <button onClick={() => onDelete(item.id)} className="text-red-600 hover:underline">Delete</button>
           </li>
         ))}
@@ -37,9 +37,9 @@ const ResumeSection = ({ title, data, onDelete, onSubmit, fields }) => {
   );
 };
 
-export default function AdminResumeManager() {
+export default function ResumeManager() {
   const sections = [
-    { key: 'resume_contact', title: '📞 Contact', fields: ['email', 'phone', 'linkedin'] },
+    { key: 'resume_contact', title: '📞 Contact', fields: ['email', 'phone', 'linkedin', 'headline'] },
     { key: 'resume_skills', title: '🛠 Skills', fields: ['name'] },
     { key: 'resume_experience', title: '💼 Experience', fields: ['company', 'role', 'description'] },
     { key: 'resume_education', title: '🎓 Education', fields: ['institution', 'degree', 'period'] },
@@ -63,7 +63,11 @@ export default function AdminResumeManager() {
 
   const handleAdd = async (e, input, key) => {
     e.preventDefault();
-    await addDoc(collection(db, key), input);
+    const sanitized = {};
+    sections.find(s => s.key === key).fields.forEach(f => {
+      sanitized[f] = input[f];
+    });
+    await addDoc(collection(db, key), sanitized);
     window.location.reload();
   };
 
