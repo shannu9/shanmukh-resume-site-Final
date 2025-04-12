@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 /* SEO Metadata (for index.html head):
   <title>Subjects – Shanmukh Sri Surya Gopi</title>
@@ -11,20 +12,30 @@ import { collection, getDocs } from "firebase/firestore";
 
 export default function SubjectsPage() {
   const [subjects, setSubjects] = useState({});
+  const [linkedSubjects, setLinkedSubjects] = useState(new Set());
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const snapshot = await getDocs(collection(db, "subjects"));
-      const rawData = snapshot.docs.map(doc => doc.data());
+    const fetchData = async () => {
+      const subjSnap = await getDocs(collection(db, "subjects"));
+      const subjectData = subjSnap.docs.map(doc => doc.data());
 
-      const grouped = rawData.reduce((acc, sub) => {
+      const projSnap = await getDocs(collection(db, "projects"));
+      const allProjects = projSnap.docs.map(doc => doc.data());
+      const taggedSubjects = new Set();
+      allProjects.forEach(proj => {
+        (proj.subjects || []).forEach(sub => taggedSubjects.add(sub));
+      });
+
+      const grouped = subjectData.reduce((acc, sub) => {
         if (!acc[sub.program]) acc[sub.program] = [];
         acc[sub.program].push(sub.name);
         return acc;
       }, {});
       setSubjects(grouped);
+      setLinkedSubjects(taggedSubjects);
     };
-    fetchSubjects();
+    fetchData();
   }, []);
 
   return (
@@ -43,18 +54,26 @@ export default function SubjectsPage() {
               {program}
             </motion.h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {list.map((subj, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: idx * 0.05 }}
-                  className="bg-white/80 backdrop-blur-sm p-5 rounded-xl shadow border border-gray-200 text-center text-lg font-medium text-gray-800 hover:scale-105 transition transform"
-                >
-                  {subj}
-                </motion.div>
-              ))}
+              {list.map((subj, idx) => {
+                const isLinked = linkedSubjects.has(subj);
+                return (
+                  <motion.div
+                    key={idx}
+                    onClick={() => isLinked && navigate(`/projects?subject=${encodeURIComponent(subj)}`)}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: idx * 0.05 }}
+                    className={`p-5 rounded-xl shadow border border-gray-200 text-center text-lg font-medium ${
+                      isLinked
+                        ? "bg-white/80 text-gray-800 hover:scale-105 cursor-pointer transition transform"
+                        : "bg-gray-200 text-gray-500 cursor-default"
+                    }`}
+                  >
+                    {subj}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         ))}
