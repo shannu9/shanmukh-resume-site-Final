@@ -8,6 +8,8 @@ import AdminDashboard from './pages/admin/Dashboard';
 import Projects from './pages/admin/Projects';
 import Header from './components/Header';
 import ResumeManager from './pages/admin/ResumeManager';
+import SubjectsManager from './pages/admin/SubjectsManager';
+
 
 export default function App() {
   return (
@@ -23,6 +25,7 @@ export default function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/projects" element={<Projects />} />
+          <Route path="/admin/subjects" element={<SubjectsManager />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
