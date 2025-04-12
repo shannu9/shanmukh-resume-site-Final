@@ -30,29 +30,37 @@ export default function ResumePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const getCol = async (name) => (await getDocs(collection(db, name))).docs.map(d => d.data());
+      const [
+        contactSnap,
+        skillsSnap,
+        expSnap,
+        eduSnap,
+        actSnap,
+        projSnap
+      ] = await Promise.all([
+        getDocs(collection(db, "resume_contact")),
+        getDocs(collection(db, "resume_skills")),
+        getDocs(collection(db, "resume_experience")),
+        getDocs(collection(db, "resume_education")),
+        getDocs(collection(db, "resume_activities")),
+        getDocs(collection(db, "projects"))
+      ]);
 
-      const contactData = (await getCol("resume_contact"))[0] || {};
-      const resumeSkills = await getCol("resume_skills");
-      const experience = await getCol("resume_experience");
-      const education = await getCol("resume_education");
-      const activities = await getCol("resume_activities");
+      const resumeSkills = skillsSnap.docs.map(d => d.data());
+      const tags = projSnap.docs.flatMap(doc => doc.data().tags || []).map(t => t.trim());
+      const allSkillNames = [...resumeSkills.map(s => s.name), ...tags];
+      const dedupedSkills = Array.from(new Set(allSkillNames.filter(Boolean))).sort();
 
-      const projectSnap = await getDocs(collection(db, "projects"));
-      const projectData = projectSnap.docs.map(doc => doc.data());
-      const allTags = projectData.flatMap(p => p.tags || []).map(t => t.trim());
-      const combinedSkills = [...resumeSkills.map(s => s.name), ...allTags];
-      const dedupedSkills = Array.from(new Set(combinedSkills.filter(Boolean))).sort();
+      const projectTitles = projSnap.docs.map(d => d.data().title);
 
-      const projectTitles = projectData.map(p => p.title);
-
-      setContact(contactData);
+      setContact(contactSnap.docs[0]?.data() || {});
       setSkills(dedupedSkills);
-      setExperience(experience);
-      setEducation(education);
-      setActivities(activities);
+      setExperience(expSnap.docs.map(d => d.data()));
+      setEducation(eduSnap.docs.map(d => d.data()));
+      setActivities(actSnap.docs.map(d => d.data()));
       setProjects(projectTitles);
     };
+
     fetchData();
   }, []);
 
