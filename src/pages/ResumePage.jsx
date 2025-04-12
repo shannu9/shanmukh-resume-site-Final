@@ -25,6 +25,7 @@ export default function ResumePage() {
   const [education, setEducation] = useState([]);
   const [projects, setProjects] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [showAllSkills, setShowAllSkills] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,16 +83,26 @@ export default function ResumePage() {
         ))}
 
         {sectionCard("🛠 Skills", (
-          <div className="flex flex-wrap gap-2">
-            {skills.map(skill => (
-              <span
-                key={skill}
-                onClick={() => navigate(`/projects?skill=${encodeURIComponent(skill)}`)}
-                className="cursor-pointer bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full hover:scale-105 transition"
+          <div>
+            <div className="flex flex-wrap gap-2">
+              {(showAllSkills ? skills : skills.slice(0, 15)).map(skill => (
+                <span
+                  key={skill}
+                  onClick={() => navigate(`/projects?skill=${encodeURIComponent(skill)}`)}
+                  className="cursor-pointer bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full hover:scale-105 transition"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+            {skills.length > 15 && (
+              <button
+                onClick={() => setShowAllSkills(prev => !prev)}
+                className="mt-3 text-sm text-blue-600 hover:underline"
               >
-                {skill}
-              </span>
-            ))}
+                {showAllSkills ? "Show Less" : "Show More"}
+              </button>
+            )}
           </div>
         ))}
 
