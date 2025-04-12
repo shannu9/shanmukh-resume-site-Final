@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 /* SEO Metadata (for index.html head):
   <title>Subjects – Shanmukh Sri Surya Gopi</title>
@@ -11,6 +12,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 export default function SubjectsPage() {
   const [subjects, setSubjects] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -44,8 +46,9 @@ export default function SubjectsPage() {
             </motion.h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {list.map((subj, idx) => (
-                <motion.div
+                <motion.button
                   key={idx}
+                  onClick={() => navigate(`/projects?subject=${encodeURIComponent(subj)}`)}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -53,7 +56,7 @@ export default function SubjectsPage() {
                   className="bg-white/80 backdrop-blur-sm p-5 rounded-xl shadow border border-gray-200 text-center text-lg font-medium text-gray-800 hover:scale-105 transition transform"
                 >
                   {subj}
-                </motion.div>
+                </motion.button>
               ))}
             </div>
           </div>
