@@ -1,0 +1,73 @@
+{
+  "resume_contact": [
+    {
+      "email": "shanmukh@example.com",
+      "phone": "+1 201 268 0951",
+      "linkedin": "https://linkedin.com/in/shanmukh",
+      "headline": "MBA Analytics @ Stevens | Ex-Infosys | Tech + Strategy"
+    }
+  ],
+  "resume_skills": [
+    {
+      "name": "Python"
+    },
+    {
+      "name": "Java"
+    },
+    {
+      "name": "SQL"
+    },
+    {
+      "name": "Tableau"
+    },
+    {
+      "name": "Salesforce"
+    }
+  ],
+  "resume_experience": [
+    {
+      "company": "Infosys",
+      "role": "Systems Engineer",
+      "description": "Salesforce CRM support and automation"
+    },
+    {
+      "company": "Indian Servers",
+      "role": "Pentester Intern",
+      "description": "Performed security testing on web apps"
+    }
+  ],
+  "resume_education": [
+    {
+      "institution": "Stevens Institute of Technology",
+      "degree": "MBA in Analytics",
+      "period": "2023\u20132025"
+    },
+    {
+      "institution": "Lakireddy Bali Reddy College",
+      "degree": "B.Tech in Computer Science",
+      "period": "2018\u20132022"
+    }
+  ],
+  "resume_projects": [
+    {
+      "title": "Employee Attrition Prediction"
+    },
+    {
+      "title": "Fake News Detection"
+    },
+    {
+      "title": "Sales Forecast Dashboard"
+    }
+  ],
+  "resume_activities": [
+    {
+      "name": "BI & Analytics Club \u2013 Stevens"
+    },
+    {
+      "name": "Basketball Team \u2013 Runner-up"
+    },
+    {
+      "name": "NSS Volunteer \u2013 COVID Awareness"
+    }
+  ]
+}

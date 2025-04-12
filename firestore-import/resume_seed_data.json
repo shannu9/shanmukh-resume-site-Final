@@ -1,0 +1,187 @@
+{
+  "resume_contact": [
+    {
+      "email": "shanmukhsrisuryagopi@gmail.com",
+      "phone": "(201) 268-0951",
+      "linkedin": "https://in.linkedin.com/in/shanmukh-sri-surya-gopi-a164631b0",
+      "headline": "MBA Analytics @ Stevens | Ex-Infosys | Tech + Strategy"
+    }
+  ],
+  "resume_education": [
+    {
+      "institution": "Stevens Institute of Technology",
+      "degree": "MBA in Analytics",
+      "period": "Expected May 2025"
+    },
+    {
+      "institution": "Lakireddy Bali Reddy College of Engineering",
+      "degree": "B.Tech in Computer Science and Engineering",
+      "period": "July 2021"
+    }
+  ],
+  "resume_skills": [
+    {
+      "name": "Python"
+    },
+    {
+      "name": "Java"
+    },
+    {
+      "name": "Apex"
+    },
+    {
+      "name": "SQL"
+    },
+    {
+      "name": "SOQL"
+    },
+    {
+      "name": "SOSL"
+    },
+    {
+      "name": "Advanced Excel"
+    },
+    {
+      "name": "Tableau"
+    },
+    {
+      "name": "MS Word"
+    },
+    {
+      "name": "MS PowerPoint"
+    },
+    {
+      "name": "Salesforce"
+    },
+    {
+      "name": "VS Code"
+    },
+    {
+      "name": "Azure DevOps"
+    },
+    {
+      "name": "Agile Methodologies"
+    },
+    {
+      "name": "Communication"
+    },
+    {
+      "name": "Collaboration"
+    },
+    {
+      "name": "Presentation Skills"
+    },
+    {
+      "name": "Risk Management"
+    }
+  ],
+  "resume_experience": [
+    {
+      "company": "Infosys Limited",
+      "role": "Systems Engineer, Salesforce",
+      "description": "Developed Salesforce features boosting adoption 20%, automated reports, Python scripts for LWC limits, improved operational efficiency by 30%."
+    },
+    {
+      "company": "Indian Servers",
+      "role": "Web Application Pentester Intern",
+      "description": "Reported critical vulnerabilities in Plug XR, reducing threats by 30%."
+    }
+  ],
+  "resume_projects": [
+    {
+      "title": "Predicting Employee Attrition Using Machine Learning"
+    },
+    {
+      "title": "Fake News Detection Using Multivariate Data Analysis"
+    },
+    {
+      "title": "Customizable Jewelry Workshop \u2013 Connection"
+    },
+    {
+      "title": "The Impact of AI on Workforce Trends"
+    },
+    {
+      "title": "MVP for Smart Collar Pet Health App"
+    },
+    {
+      "title": "Leadership Case Study \u2013 Street Cause"
+    }
+  ],
+  "resume_activities": [
+    {
+      "name": "Business Intelligence & Analytics Club \u2013 Stevens"
+    },
+    {
+      "name": "Basketball Team \u2013 Runner-up"
+    },
+    {
+      "name": "NSS Volunteer \u2013 Social Campaigns"
+    },
+    {
+      "name": "ACG Coordinator \u2013 Event Management"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Customizable Jewelry Workshop \u2013 Connection",
+      "description": "Startup proposal focused on experiential ring-making workshops. Includes market analysis, competitor review, 4Ps marketing, and use of AI tools like Midjourney and AR visualizations.",
+      "type": "Presentation",
+      "tags": [
+        "Business Modeling",
+        "Market Research",
+        "AI Tools",
+        "Marketing Strategy",
+        "Google Ads"
+      ],
+      "subjects": [
+        "Business Strategy",
+        "Marketing"
+      ]
+    },
+    {
+      "title": "The Impact of AI on Workforce Trends",
+      "description": "Group research on how AI affects jobs across industries. Covers automation impact, AI adoption, and labor market forecasting using sources like Avanade Insights and Tech News World.",
+      "type": "Research",
+      "tags": [
+        "AI",
+        "Data Analytics",
+        "Future of Work",
+        "Forecasting"
+      ],
+      "subjects": [
+        "Artificial Intelligence",
+        "Workforce Analytics"
+      ]
+    },
+    {
+      "title": "MVP for Smart Collar Pet Health App",
+      "description": "Tested and presented a smart collar solution for pet health and wellness monitoring. Survey insights from 25+ users, gap analysis, pricing sensitivity, and pivot recommendations.",
+      "type": "MVP",
+      "tags": [
+        "MVP Design",
+        "Product Testing",
+        "UX Research",
+        "User Interviews"
+      ],
+      "subjects": [
+        "Product Development",
+        "Business Intelligence"
+      ]
+    },
+    {
+      "title": "Leadership Case Study \u2013 Street Cause",
+      "description": "Explores leadership qualities through a fictional club's actions and governance. Focus on feedback loops, team unity, transparency, and inclusiveness.",
+      "type": "Case Study",
+      "tags": [
+        "Leadership",
+        "Conflict Management",
+        "Teamwork",
+        "Feedback"
+      ],
+      "subjects": [
+        "Organizational Behavior",
+        "Leadership"
+      ]
+    }
+  ]
+}
