@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { FaLinkedin } from "react-icons/fa";
+import SeoHelmet from "../components/SeoHelmet";
 
 const sectionCard = (title, content) => (
   <motion.div
@@ -65,7 +66,14 @@ export default function ResumePage() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-[#f3f4f6] to-[#e0f7fa] min-h-screen py-10 px-4 sm:px-8 lg:px-16">
+    <>
+<SeoHelmet
+  title="Resume"
+  description="Explore Shanmukh's resume, skills, and experience in Python, SQL, Tableau, and more."
+  url="https://shanmukh-resume.web.app"
+/>
+
+<div className="bg-gradient-to-br from-[#f3f4f6] to-[#e0f7fa] min-h-screen py-10 px-4 sm:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto py-10 px-4">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-extrabold text-gray-900">Shanmukh Sri Surya Gopi</h1>
@@ -149,5 +157,6 @@ export default function ResumePage() {
         ))}
       </div>
     </div>
+</>
   );
 }
