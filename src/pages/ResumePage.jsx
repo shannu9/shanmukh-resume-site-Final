@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { FaLinkedin } from "react-icons/fa"; 
 
 const sectionCard = (title, content) => (
   <motion.div
@@ -51,7 +52,17 @@ export default function ResumePage() {
           <ul className="space-y-1">
             <li>Email: {contact.email}</li>
             <li>Phone: {contact.phone}</li>
-            <li>LinkedIn: {contact.linkedin}</li>
+            <li>
+              <a
+                 href={contact.linkedin}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 bg-white/70 px-3 py-2 rounded shadow text-blue-700 hover:bg-white transition w-fit"
+              >
+                <FaLinkedin className="text-xl" />
+                LinkedIn Profile
+              </a>
+            </li>
           </ul>
         ))}
 
