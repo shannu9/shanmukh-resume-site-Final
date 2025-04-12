@@ -12,17 +12,22 @@ import {
 
 export default function SkillsManager() {
   const [skills, setSkills] = useState([]);
+  const [allSkills, setAllSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
   const [dragIndex, setDragIndex] = useState(null);
 
-  const fetchSkills = async () => {
-    const q = query(collection(db, "resume_skills"), orderBy("order"));
-    const snapshot = await getDocs(q);
-    const data = snapshot.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i }));
-    setSkills(data);
-  };
-
   useEffect(() => {
+    const fetchSkills = async () => {
+      const resumeSnap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
+      const resumeSkills = resumeSnap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i }));
+      setSkills(resumeSkills);
+
+      const projectSnap = await getDocs(collection(db, "projects"));
+      const tags = projectSnap.docs.flatMap(doc => doc.data().tags || []).map(t => t.trim());
+      const combined = [...resumeSkills.map(s => s.name), ...tags];
+      const deduped = Array.from(new Set(combined.filter(Boolean))).sort();
+      setAllSkills(deduped);
+    };
     fetchSkills();
   }, []);
 
@@ -39,12 +44,12 @@ export default function SkillsManager() {
       order: skills.length
     });
     setNewSkill("");
-    fetchSkills();
+    const snap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
+    const updated = snap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i }));
+    setSkills(updated);
   };
 
-  const handleDragStart = (index) => {
-    setDragIndex(index);
-  };
+  const handleDragStart = (index) => setDragIndex(index);
 
   const handleDrop = (dropIndex) => {
     if (dragIndex === null || dragIndex === dropIndex) return;
@@ -84,28 +89,41 @@ export default function SkillsManager() {
         </button>
       </div>
 
-      <div className="max-w-xl mx-auto space-y-3">
-        {skills.map((skill, i) => (
-          <div
-            key={skill.id}
-            draggable
-            onDragStart={() => handleDragStart(i)}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={() => handleDrop(i)}
-            className="cursor-move bg-white/80 px-4 py-2 rounded shadow border border-gray-200 text-gray-800 hover:bg-white"
-          >
-            {skill.name}
-          </div>
-        ))}
-      </div>
+      <div className="max-w-xl mx-auto">
+        <h2 className="text-lg font-semibold text-gray-700 mb-3">🔃 Reorderable Resume Skills</h2>
+        <div className="space-y-2 mb-6">
+          {skills.map((skill, i) => (
+            <div
+              key={skill.id}
+              draggable
+              onDragStart={() => handleDragStart(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => handleDrop(i)}
+              className="cursor-move bg-white/90 px-4 py-2 rounded shadow border border-gray-300 text-gray-800 hover:bg-white flex items-center justify-between"
+            >
+              <span>{i + 1}. {skill.name}</span>
+              <span className="text-sm text-gray-400">drag</span>
+            </div>
+          ))}
+        </div>
 
-      <div className="max-w-xl mx-auto mt-6 text-center">
-        <button
-          onClick={saveOrder}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-        >
-          Save Order
-        </button>
+        <div className="text-center mb-10">
+          <button
+            onClick={saveOrder}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+          >
+            Save Order
+          </button>
+        </div>
+
+        <h2 className="text-lg font-semibold text-gray-700 mb-2">📦 All Skills Found in Projects & Resume</h2>
+        <div className="flex flex-wrap gap-2 mb-10">
+          {allSkills.map((s, i) => (
+            <span key={i} className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+              {s}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
