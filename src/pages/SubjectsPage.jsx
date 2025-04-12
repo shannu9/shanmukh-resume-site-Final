@@ -5,8 +5,8 @@ import { collection, getDocs } from "firebase/firestore";
 
 /* SEO Metadata (for index.html head):
   <title>Subjects – Shanmukh Sri Surya Gopi</title>
-  <meta name="description" content="Subjects covered during MBA and B.Tech programs including Business Analytics, Python Programming, AI, and more.">
-  <meta name="keywords" content="Subjects, Shanmukh, MBA, B.Tech, Python, Data Science, Cloud Computing">
+  <meta name="description" content="Subjects organized by program from MBA and B.Tech degrees. Includes AI, Analytics, Cloud Computing, and more.">
+  <meta name="keywords" content="Subjects, MBA, B.Tech, Analytics, AI, Python, Cloud">
 */
 
 export default function SubjectsPage() {
@@ -22,7 +22,6 @@ export default function SubjectsPage() {
         acc[sub.program].push(sub.name);
         return acc;
       }, {});
-
       setSubjects(grouped);
     };
     fetchSubjects();
@@ -43,18 +42,18 @@ export default function SubjectsPage() {
             >
               {program}
             </motion.h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {list.map((subj, idx) => (
-                <motion.span
+                <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: idx * 0.05 }}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm shadow"
+                  className="bg-white/80 backdrop-blur-sm p-5 rounded-xl shadow border border-gray-200 text-center text-lg font-medium text-gray-800 hover:scale-105 transition transform"
                 >
                   {subj}
-                </motion.span>
+                </motion.div>
               ))}
             </div>
           </div>
