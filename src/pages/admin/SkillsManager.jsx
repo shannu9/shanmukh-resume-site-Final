@@ -7,29 +7,31 @@ import {
   updateDoc,
   doc,
   query,
-  orderBy
+  orderBy,
+  deleteDoc
 } from "firebase/firestore";
 
 export default function SkillsManager() {
-  const [editId, setEditId] = useState(null);
-  const [editName, setEditName] = useState("");
   const [skills, setSkills] = useState([]);
   const [allSkills, setAllSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
+  const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState("");
   const [dragIndex, setDragIndex] = useState(null);
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      const resumeSnap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
-      const resumeSkills = resumeSnap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i }));
-      setSkills(resumeSkills);
+  const fetchSkills = async () => {
+    const resumeSnap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
+    const resumeSkills = resumeSnap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i }));
+    setSkills(resumeSkills);
 
-      const projectSnap = await getDocs(collection(db, "projects"));
-      const tags = projectSnap.docs.flatMap(doc => doc.data().tags || []).map(t => t.trim());
-      const combined = [...resumeSkills.map(s => s.name), ...tags];
-      const deduped = Array.from(new Set(combined.filter(Boolean))).sort();
-      setAllSkills(deduped);
-    };
+    const projectSnap = await getDocs(collection(db, "projects"));
+    const tags = projectSnap.docs.flatMap(doc => doc.data().tags || []).map(t => t.trim());
+    const combined = [...resumeSkills.map(s => s.name), ...tags];
+    const deduped = Array.from(new Set(combined.filter(Boolean))).sort();
+    setAllSkills(deduped);
+  };
+
+  useEffect(() => {
     fetchSkills();
   }, []);
 
@@ -46,23 +48,9 @@ export default function SkillsManager() {
       order: skills.length
     });
     setNewSkill("");
-    const snap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
-    const updated = snap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i }));
-    setSkills(updated);
+    fetchSkills();
   };
 
-  const handleDragStart = (index) => setDragIndex(index);
-
-  const handleDrop = (dropIndex) => {
-    if (dragIndex === null || dragIndex === dropIndex) return;
-    const reordered = [...skills];
-    const [moved] = reordered.splice(dragIndex, 1);
-    reordered.splice(dropIndex, 0, moved);
-    setSkills(reordered.map((skill, i) => ({ ...skill, order: i })));
-    setDragIndex(null);
-  };
-
-  
   const handleEdit = (skill) => {
     setEditId(skill.id);
     setEditName(skill.name);
@@ -74,14 +62,23 @@ export default function SkillsManager() {
     await updateDoc(ref, { name: editName.trim() });
     setEditId(null);
     setEditName("");
-    const snap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
-    setSkills(snap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i })));
+    fetchSkills();
   };
 
   const handleDelete = async (id) => {
-    await updateDoc(doc(db, "resume_skills", id), { name: "[DELETED]" });
-    const filtered = skills.filter(s => s.id !== id);
-    setSkills(filtered.map((s, i) => ({ ...s, order: i })));
+    await deleteDoc(doc(db, "resume_skills", id));
+    fetchSkills();
+  };
+
+  const handleDragStart = (index) => setDragIndex(index);
+
+  const handleDrop = (dropIndex) => {
+    if (dragIndex === null || dragIndex === dropIndex) return;
+    const reordered = [...skills];
+    const [moved] = reordered.splice(dragIndex, 1);
+    reordered.splice(dropIndex, 0, moved);
+    setSkills(reordered.map((skill, i) => ({ ...skill, order: i })));
+    setDragIndex(null);
   };
 
   const saveOrder = async () => {
@@ -123,12 +120,29 @@ export default function SkillsManager() {
               onDragStart={() => handleDragStart(i)}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDrop(i)}
-              className="cursor-move bg-white/90 px-4 py-2 rounded shadow border border-gray-300 text-gray-800 hover:bg-white flex items-center justify-between space-x-3"
+              className="cursor-move bg-white/90 px-4 py-2 rounded shadow border border-gray-300 text-gray-800 hover:bg-white flex items-center justify-between gap-2"
             >
-              <span>{i + 1}. {skill.name}</span>
-              <span className="text-sm text-gray-400">drag</span>
-      <button onClick={() => handleEdit(skill)} className="text-blue-600 text-xs hover:underline">Edit</button>
-      <button onClick={() => handleDelete(skill.id)} className="text-red-500 text-xs hover:underline">Delete</button>
+              {editId === skill.id ? (
+                <input
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="flex-grow border px-2 py-1 rounded text-sm"
+                />
+              ) : (
+                <span className="flex-grow">{i + 1}. {skill.name}</span>
+              )}
+
+              {editId === skill.id ? (
+                <>
+                  <button onClick={handleEditSave} className="text-green-600 text-xs hover:underline">Save</button>
+                  <button onClick={() => setEditId(null)} className="text-gray-500 text-xs hover:underline">Cancel</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => handleEdit(skill)} className="text-blue-600 text-xs hover:underline">Edit</button>
+                  <button onClick={() => handleDelete(skill.id)} className="text-red-500 text-xs hover:underline">Delete</button>
+                </>
+              )}
             </div>
           ))}
         </div>
