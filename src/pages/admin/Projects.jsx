@@ -12,17 +12,16 @@ export default function ProjectsManager() {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
-  const fetchData = async () => {
-    const snap = await getDocs(collection(db, "projects"));
-    const projectsData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    setProjects(projectsData);
-
-    const subjSnap = await getDocs(collection(db, "subjects"));
-    const subjectNames = subjSnap.docs.map(doc => doc.data().name);
-    setSubjectsList(subjectNames);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const snap = await getDocs(collection(db, "projects"));
+      const projectsData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setProjects(projectsData);
+
+      const subjSnap = await getDocs(collection(db, "subjects"));
+      const subjectNames = subjSnap.docs.map(doc => doc.data().name);
+      setSubjectsList(subjectNames);
+    };
     fetchData();
   }, []);
 
@@ -47,55 +46,55 @@ export default function ProjectsManager() {
 
     await addDoc(collection(db, "projects"), newProject);
     setForm({ title: '', description: '', type: 'Tool', tags: '', selectedSubjects: [], image: null });
-    fetchData();
+    const snap = await getDocs(collection(db, "projects"));
+    setProjects(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   };
 
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "projects", id));
-    fetchData();
+    setProjects(projects.filter(p => p.id !== id));
   };
 
   const handleEditChange = (e) => {
     const { name, value, files } = e.target;
-    setEditForm({ ...editForm, [name]: files ? files[0] : value });
+    if (files) {
+      setEditForm(prev => ({ ...prev, image: files[0] }));
+    } else {
+      setEditForm(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleEditSubmit = async (id) => {
-    const { title, description, type, tags, selectedSubjects, image } = editForm;
     const updates = {
-      title,
-      description,
-      type,
-      tags: tags.split(',').map(t => t.trim()),
-      subjects: selectedSubjects
+      title: editForm.title || '',
+      description: editForm.description || '',
+      type: editForm.type || 'Tool',
+      tags: editForm.tags ? editForm.tags.split(',').map(t => t.trim()) : [],
+      subjects: editForm.selectedSubjects || []
     };
 
-    if (image) {
-      const imageRef = ref(storage, `projects/${image.name}`);
-      await uploadBytes(imageRef, image);
+    if (editForm.image) {
+      const imageRef = ref(storage, `projects/${editForm.image.name}`);
+      await uploadBytes(imageRef, editForm.image);
       updates.imageUrl = await getDownloadURL(imageRef);
     }
 
     await updateDoc(doc(db, "projects", id), updates);
     setEditingId(null);
     setEditForm({});
-    fetchData();
+    const snap = await getDocs(collection(db, "projects"));
+    setProjects(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f3f4f6] to-[#e0f7fa] py-10 px-4">
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">🛠 Manage Projects (with Edit + Tags + Subjects)</h1>
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">🛠 Manage Projects (Fixed Save)</h1>
 
       <form onSubmit={handleAddProject} className="max-w-xl mx-auto bg-white/70 p-6 rounded-xl shadow border border-gray-200 mb-10 space-y-4">
         <input className="w-full border rounded px-3 py-2" placeholder="Project Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required />
         <textarea className="w-full border rounded px-3 py-2" placeholder="Description" rows="3" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
         <select className="w-full border rounded px-3 py-2" value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}>
-          <option>Tool</option>
-          <option>Blog</option>
-          <option>Presentation</option>
-          <option>Case Study</option>
-          <option>Research</option>
-          <option>MVP</option>
+          <option>Tool</option><option>Blog</option><option>Presentation</option><option>Case Study</option><option>Research</option><option>MVP</option>
         </select>
         <input className="w-full border rounded px-3 py-2" placeholder="Tags (comma separated)" value={form.tags} onChange={e => setForm({ ...form, tags: e.target.value })} />
         <select multiple value={form.selectedSubjects} onChange={e => setForm({ ...form, selectedSubjects: Array.from(e.target.selectedOptions, opt => opt.value) })} className="w-full border rounded px-3 py-2 h-32">
@@ -116,7 +115,7 @@ export default function ProjectsManager() {
                   <option>Tool</option><option>Blog</option><option>Presentation</option><option>Case Study</option><option>Research</option><option>MVP</option>
                 </select>
                 <input className="w-full border px-2 py-1 rounded" name="tags" defaultValue={p.tags?.join(', ')} onChange={handleEditChange} />
-                <select name="selectedSubjects" multiple defaultValue={p.subjects || []} onChange={e => setEditForm({ ...editForm, selectedSubjects: Array.from(e.target.selectedOptions, opt => opt.value) })} className="w-full border px-2 py-1 rounded h-28">
+                <select name="selectedSubjects" multiple defaultValue={p.subjects || []} onChange={e => setEditForm(prev => ({ ...prev, selectedSubjects: Array.from(e.target.selectedOptions, opt => opt.value) }))} className="w-full border px-2 py-1 rounded h-28">
                   {subjectsList.map((subj, idx) => <option key={idx} value={subj}>{subj}</option>)}
                 </select>
                 <input type="file" name="image" accept="image/*" onChange={handleEditChange} />
