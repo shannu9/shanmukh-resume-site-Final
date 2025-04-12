@@ -132,7 +132,7 @@ export default function ProjectsManager() {
                 <div className="text-xs text-gray-600">Tags: {p.tags?.join(', ')}</div>
                 <div className="text-xs text-gray-600">Subjects: {p.subjects?.join(', ')}</div>
                 <div className="mt-3 flex gap-2">
-                  <button onClick={() => { setEditingId(p.id); setEditForm(p); }} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
+                  <button onClick={() => { setEditingId(p.id); setEditForm({ ...p, tags: Array.isArray(p.tags) ? p.tags.join(', ') : p.tags, selectedSubjects: p.subjects || [] }); }} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</button>
                   <button onClick={() => handleDelete(p.id)} className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
                 </div>
               </>
