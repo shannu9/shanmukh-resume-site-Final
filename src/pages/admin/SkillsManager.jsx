@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore";
 
 export default function SkillsManager() {
+  const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState("");
   const [skills, setSkills] = useState([]);
   const [allSkills, setAllSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
@@ -60,6 +62,28 @@ export default function SkillsManager() {
     setDragIndex(null);
   };
 
+  
+  const handleEdit = (skill) => {
+    setEditId(skill.id);
+    setEditName(skill.name);
+  };
+
+  const handleEditSave = async () => {
+    if (!editName.trim()) return;
+    const ref = doc(db, "resume_skills", editId);
+    await updateDoc(ref, { name: editName.trim() });
+    setEditId(null);
+    setEditName("");
+    const snap = await getDocs(query(collection(db, "resume_skills"), orderBy("order")));
+    setSkills(snap.docs.map((d, i) => ({ id: d.id, ...d.data(), index: i })));
+  };
+
+  const handleDelete = async (id) => {
+    await updateDoc(doc(db, "resume_skills", id), { name: "[DELETED]" });
+    const filtered = skills.filter(s => s.id !== id);
+    setSkills(filtered.map((s, i) => ({ ...s, order: i })));
+  };
+
   const saveOrder = async () => {
     for (let i = 0; i < skills.length; i++) {
       const skill = skills[i];
@@ -99,10 +123,12 @@ export default function SkillsManager() {
               onDragStart={() => handleDragStart(i)}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDrop(i)}
-              className="cursor-move bg-white/90 px-4 py-2 rounded shadow border border-gray-300 text-gray-800 hover:bg-white flex items-center justify-between"
+              className="cursor-move bg-white/90 px-4 py-2 rounded shadow border border-gray-300 text-gray-800 hover:bg-white flex items-center justify-between space-x-3"
             >
               <span>{i + 1}. {skill.name}</span>
               <span className="text-sm text-gray-400">drag</span>
+      <button onClick={() => handleEdit(skill)} className="text-blue-600 text-xs hover:underline">Edit</button>
+      <button onClick={() => handleDelete(skill.id)} className="text-red-500 text-xs hover:underline">Delete</button>
             </div>
           ))}
         </div>
