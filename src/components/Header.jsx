@@ -12,6 +12,8 @@ export default function Header() {
     { name: "Subjects", path: "/subjects" },
     { name: "Certifications", path: "/certifications" },
     { name: "Admin", path: "/admin" },
+    { title: "Dashboard", path: "/dashboard" }
+
   ];
 
   return (

@@ -11,6 +11,7 @@ import ResumeManager from './pages/admin/ResumeManager';
 import SubjectsManager from './pages/admin/SubjectsManager';
 import CertificationsManager from './pages/admin/CertificationsManager';
 import SkillsManager from './pages/admin/SkillsManager';
+import DashboardPage from './pages/DashboardPage';
 
 
 
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/admin/subjects" element={<SubjectsManager />} />
           <Route path="/admin/certifications" element={<CertificationsManager />} />
           <Route path="/admin/skills" element={<SkillsManager />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
