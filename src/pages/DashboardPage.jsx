@@ -17,12 +17,13 @@ export default function DashboardPage() {
         >
           <h2 className="text-xl font-semibold text-gray-800 mb-4">💰 Sales Performance (Tableau)</h2>
           <iframe
-            src="https://public.tableau.com/views/YOUR_PROJECT_NAME/YOUR_DASHBOARD_NAME"
-            width="100%"
-            height="700"
-            allowFullScreen
-            className="rounded-lg border"
-          ></iframe>
+              src="https://public.tableau.com/views/DashboardonWebPage/Dashboard1"
+              width="100%"
+              height="700"
+              allowFullScreen
+              className="rounded-lg border"
+          />
+
         </motion.div>
 
         <motion.div
