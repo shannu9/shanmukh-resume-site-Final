@@ -50,7 +50,7 @@ export default function SubjectsManager() {
           required
         />
         <select className="w-full border rounded px-3 py-2" value={program} onChange={e => setProgram(e.target.value)}>
-          <option value="MBA">MBA</option>
+          <option value="MBA">MBA in Analytics</option>
           <option value="B.Tech">B.Tech</option>
           <option value="Certification">Certification</option>
         </select>

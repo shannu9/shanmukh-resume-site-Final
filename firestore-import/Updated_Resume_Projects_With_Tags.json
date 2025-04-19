@@ -1,0 +1,112 @@
+[
+  {
+    "title":"Employee Attrition Prediction Using ML",
+    "type":"Academic",
+    "description":"Built ML models (Logistic Regression, Random Forest, Neural Networks) in Orange with 89.9% accuracy to predict attrition and support HR strategy.",
+    "tags":[
+      "Machine Learning",
+      "Logistic Regression",
+      "Random Forest",
+      "Neural Networks",
+      "Orange",
+      "HR Analytics"
+    ]
+  },
+  {
+    "title":"Fake News Detection Using Multivariate Data Analysis",
+    "type":"Academic",
+    "description":"Used SAS on a dataset of 44,000+ articles to detect misinformation using statistical techniques.",
+    "tags":[
+      "SAS",
+      "Multivariate Analysis",
+      "Data Cleaning",
+      "Misinformation Detection"
+    ]
+  },
+  {
+    "title":"Alert to Doctor Based on IoT",
+    "type":"Academic",
+    "description":"Created a Raspberry Pi-based health monitoring system using MAX30100 sensor, Firebase, and Android app for real-time emergency alerts to doctors.",
+    "tags":[
+      "IoT",
+      "Raspberry Pi",
+      "MAX30100",
+      "Firebase",
+      "Android"
+    ]
+  },
+  {
+    "title":"AI-Powered Resume Builder",
+    "type":"Business",
+    "description":"Developed an AI-driven tool to auto-tailor resumes and generate cover letters with ATS optimization and financial projections showing 87% profit margin in Year 3.",
+    "tags":[
+      "AI",
+      "Natural Language Processing",
+      "Resume Optimization",
+      "ATS",
+      "React",
+      "Firebase"
+    ]
+  },
+  {
+    "title":"Smart Collar MVP \u2013 Pet Health Monitoring App",
+    "type":"Business",
+    "description":"Conducted user research and MVP testing for a smart pet collar app that monitors health metrics and provides notifications. Surveyed 153 users and validated key features.",
+    "tags":[
+      "MVP",
+      "UX Research",
+      "Firebase",
+      "Health Monitoring",
+      "IoT",
+      "Mobile App"
+    ]
+  },
+  {
+    "title":"Connection \u2013 DIY Jewelry Retail Business Plan",
+    "type":"Business",
+    "description":"Developed a D2C experience for DIY jewelry making using AR, Instagram strategy, market research, SWOT, and a projected $245K Year 1 revenue.",
+    "tags":[
+      "Business Plan",
+      "Marketing Strategy",
+      "AR",
+      "Instagram",
+      "Market Research",
+      "SWOT"
+    ]
+  },
+  {
+    "title":"Impact of AI on the Workforce",
+    "type":"Business",
+    "description":"Analyzed job market shifts due to AI across regions and industries, identifying key skills and upskilling needs. Delivered insights via visualization and presentation.",
+    "tags":[
+      "AI",
+      "Workforce Analysis",
+      "Visualization",
+      "Presentation",
+      "Upskilling"
+    ]
+  },
+  {
+    "title":"Street Cause NGO \u2013 Leadership Simulation",
+    "type":"Leadership",
+    "description":"Led a team scenario mimicking NGO operations to practice leadership, feedback, inclusion, and conflict resolution.",
+    "tags":[
+      "Leadership",
+      "Teamwork",
+      "Inclusion",
+      "NGO Simulation",
+      "Conflict Resolution"
+    ]
+  },
+  {
+    "title":"Visionary Leadership Club Project (MGT 612)",
+    "type":"Leadership",
+    "description":"Worked on team vision, inclusive leadership, and transparent communication for a student-led organization.",
+    "tags":[
+      "Leadership",
+      "Communication",
+      "Inclusive Leadership",
+      "Team Vision"
+    ]
+  }
+]
