@@ -1,19 +1,14 @@
-
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
 
 export default defineConfig({
+  root: ".",
+  publicDir: "public",
   plugins: [react()],
-  publicDir: 'public',
   build: {
-    outDir: 'dist',
-    target: 'es2015',
+    outDir: "dist",
+    target: "es2015",
     sourcemap: false
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src')
-    }
   }
 });
