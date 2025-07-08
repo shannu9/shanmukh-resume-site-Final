@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 import SeoHelmet from "../components/SeoHelmet";
 
 const sectionCard = (title, content) => (
@@ -87,15 +87,27 @@ export default function ResumePage() {
               <li>Email: {contact.email}</li>
               <li>Phone: {contact.phone}</li>
               <li>
-                <a
-                  href={contact.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 bg-white/70 px-3 py-2 rounded shadow text-blue-700 hover:bg-white transition w-fit"
-                >
-                  <FaLinkedin className="text-xl" />
-                  LinkedIn Profile
-                </a>
+                <div className="flex gap-4 flex-wrap">
+                  <a
+                    href={contact.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 bg-white/70 px-3 py-2 rounded shadow text-blue-700 hover:bg-white transition w-fit"
+                  >
+                    <FaLinkedin className="text-xl" />
+                    LinkedIn Profile
+                  </a>
+
+                  <a
+                    href="https://github.com/shannu9"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 bg-white/70 px-3 py-2 rounded shadow text-gray-800 hover:bg-white transition w-fit"
+                  >
+                    <FaGithub className="text-xl" />
+                    GitHub Profile
+                  </a>
+                </div>
               </li>
             </ul>
           ))}
